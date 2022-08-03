@@ -1,213 +1,155 @@
+---------------
+-- Main menu --
+---------------
 
-local awful = require("awful")
-local wibox = require("wibox")
-local gears = require("gears")
+local tool_box = nil
 
-local hotkeys_popup = require("awful.hotkeys_popup")
-
-local ui = require("tools.ui_manager")
-local theme = require("tools.theme_manager")
-local utilities = require("tools.utils")
-
-local button_factory = require("ui.menu_button")
-
-local screen = awful.screen.focused()
-
-
-local menu = wibox {
-    screen       = screen,
-    shape        = ui.ROUNDED_RECT,
-    expand       = true,
-    visible      = false,
-    ontop        = true,
-    x            = ui.top_bar_position.x, 
-    y            = ui.invisible_top_bar_height,
-    width        = ui.main_menu_dimension.width,
-    height       = ui.main_menu_dimension.height,
-    border_width = ui.top_bar_border,
-    border_color = theme.t_foreground_color
+local Menu = {
+    screen              = nil,
+    -- Widgets
+    menu                = nil,
+    awesome_shortcuts_b = nil,
+    awesome_settings_b  = nil,
+    toggle_theme_b      = nil,
+    restart_b           = nil,
+    poweroff_b          = nil,
+    logout_b            = nil
 }
+Menu.__index = Menu
 
-local function show_menu()
-    menu.visible = not menu.visible
+
+function Menu : set_tool_box(tb)
+    tool_box = tb
 end
 
-menu : connect_signal(
-    "mouse::leave", 
-    function()
-        if menu.visible then
-            menu.visible = false
-        end
-    end
-)
+function Menu : toggle_menu()
+    self.menu.visible = not self.menu.visible
+end
 
+function Menu : init_ui(screen, ColorButton, update_theme)
+    self.screen = screen
 
-local integrated_menu = {
-    create_function = function(button_function)
-        return function()
-            show_menu()
-            button_function()
-        end
-    end
-}
+    self.menu = tool_box.wibox {
+        shape        = tool_box.ui.ROUNDED_RECT,
+        expand       = true,
+        visible      = false,
+        ontop        = true
+    }
 
-local awesome_shortcuts_fun = function() show_menu() hotkeys_popup.show_help(nil, awful.screen.focused()) end
-local awesome_shortcuts     = button_factory.create_button(theme.key_icon, theme.d_key_icon, "Awesome shortcuts", awesome_shortcuts_fun)
+    button_margin = tool_box.ui.main_menu_icon_margin
 
-local awesome_settings_fun = integrated_menu.create_function(ui.show_notification)
-local awesome_settings     = button_factory.create_button(theme.settings_icon, theme.d_settings_icon, "Awesome settings", awesome_settings_fun)
+    local awesome_shortcuts_fun = function() self : toggle_menu() tool_box.hotkeys_popup.show_help(nil, tool_box.awful.screen.focused()) end
+    self.awesome_shortcuts_b = ColorButton.new()
 
-local toggle_theme_fun = integrated_menu.create_function(theme.toggle_theme)
-local toggle_theme     = button_factory.create_button(theme.toggle_theme_icon, theme.d_toggle_theme_icon, "Toggle theme", toggle_theme_fun)
-
-local restart_fun = integrated_menu.create_function(utilities.restart)
-local restart     = button_factory.create_button(theme.restart_icon, theme.d_restart_icon, "Restart", restart_fun)
-
-local poweroff_fun = integrated_menu.create_function(utilities.poweroff)
-local poweroff     = button_factory.create_button(theme.power_icon, theme.d_power_icon, "Power off", poweroff_fun)
-
-local logout_fun = integrated_menu.create_function(awesome.quit)
-local logout     = button_factory.create_button(theme.account_icon, theme.d_account_icon, "Log out", logout_fun)
-
-
-menu : setup {
-    layout = wibox.layout.align.vertical,
+    self.awesome_shortcuts_b : init_ui(true, "Awesome shortcuts", button_margin)
+    self.awesome_shortcuts_b : assemble_button(awesome_shortcuts_fun)
+    self.awesome_shortcuts_b : update_ui()
     
-    {
-        layout = wibox.layout.align.vertical,
-        awesome_shortcuts,
-        awesome_settings,
-        toggle_theme
-    },
+
+    local awesome_settings_fun = function() self : toggle_menu() end
+    self.awesome_settings_b = ColorButton.new()
     
-    {
-        layout = wibox.layout.align.vertical,
-        restart,
-        poweroff,
-        logout
-    },
-    nil
-}
+    self.awesome_settings_b : init_ui(true, "Awesome settings", button_margin)
+    self.awesome_settings_b : assemble_button(awesome_settings_fun)
+    self.awesome_settings_b : update_ui()
 
 
+    local toggle_theme_fun = function() self : toggle_menu() update_theme() end
+    self.toggle_theme_b = ColorButton.new()
+    
+    self.toggle_theme_b : init_ui(true, "Toggle theme", button_margin)
+    self.toggle_theme_b : assemble_button(toggle_theme_fun)
+    self.toggle_theme_b : update_ui()
 
 
-return { show_menu = show_menu }
+    local restart_fun = function() self : toggle_menu() tool_box.utilities.restart() end
+    self.restart_b = ColorButton.new()
+    
+    self.restart_b : init_ui(true, "Restart", button_margin)
+    self.restart_b : assemble_button(restart_fun)
+    self.restart_b : update_ui()
 
 
--- local awful = require("awful")
--- local wibox = require("wibox")
--- local gears = require("gears")
--- local menubar = require("menubar")
--- local hotkeys_popup = require("awful.hotkeys_popup")
--- 
--- -- local icons = require("icons")
--- local theme = require("tools.theme_manager")
--- local ui = require("tools.ui_manager")
--- 
--- local utilities = require("tools.utils")
--- 
--- myawesomemenu = {
---    { "hotkeys", function() hotkeys_popup.show_help(nil, awful.screen.focused()) end },
---    { "manual", terminal .. " -e man awesome" },
---    { "restart", awesome.restart },
---    { "quit", function() awesome.quit() end },
--- }
--- 
--- local menu_awesome = { "awesome", myawesomemenu, theme.main_icon }
--- local menu_terminal = { "open terminal", terminal }
--- 
--- -- mymainmenu = awful.menu({
--- --     items = {
--- --         menu_awesome,
--- --         -- { "Debian", debian.menu.Debian_menu.Debian },
--- --         menu_terminal,
--- --     }
--- -- })
--- 
--- local awesome_shortcuts = {
---     "Awesome shortcuts",
---     function()
---         hotkeys_popup.show_help(nil, awful.screen.focused())
---     end 
--- }
--- 
--- local awesome_settings = {
---     "Awesome settings",
---     terminal,
---     theme.settings_icon
--- }
--- 
--- local toggle_theme = {
---     "Toggle theme",
---     terminal,
---     theme.toggle_theme_icon
--- }
--- 
--- local restart = {
---     "Restart",
---     function()
---         utilities.restart()
---     end,
---     theme.restart_icon
--- }
--- 
--- local poweroff = {
---     "Power off",
---     function()
---         utilities.poweroff()
---     end,
---     theme.power_icon
--- }
--- 
--- local logout = {
---     "Log out " .. utilities.whoami,
---     function()
---         awesome.quit()
---     end
--- }
--- 
--- 
--- local search_button = {
---     "Search",
---     function()
---         utilities.show_rufi()
---     end,
---     wibox.widget {
---         layout = wibox.container.margin(self, ui.main_menu_icon_margin, ui.main_menu_icon_margin, ui.main_menu_icon_margin, ui.main_menu_icon_margin),
---         {
---             widget        = wibox.widget.imagebox,
---             forced_width  = ui.main_menu_icon_dimension,
---             forced_height = ui.main_menu_icon_dimension,
---             resize        = true,
---             image         = theme.search_icon
---         }
---     }
--- }
--- 
--- 
--- local mymainmenu = awful.menu(
---     {
---         items = {
---             search_button,
---             awesome_shortcuts,
---             awesome_settings,
---             toggle_theme,
---             restart,
---             poweroff,
---             logout
---         }
---     }
--- ) 
--- 
--- menubar.utils.terminal = terminal -- Set the terminal for applications that require it
--- 
--- local function show_menu()
---     mymainmenu : toggle(
---         { 
---             coords = { x = ui.top_bar_position.x, y = ui.invisible_top_bar_height } 
---         }
---     )
--- end
--- 
--- return { show_menu = show_menu }
+    local poweroff_fun = function() self : toggle_menu() tool_box.utilities.poweroff() end
+    self.poweroff_b = ColorButton.new()
+    
+    self.poweroff_b : init_ui(true, "Power off", button_margin)
+    self.poweroff_b : assemble_button(poweroff_fun)
+    self.poweroff_b : update_ui()
+
+
+    local logout_fun = function() self : toggle_menu() awesome.quit() end
+    self.logout_b = ColorButton.new()
+    
+    self.logout_b : init_ui(true, "Log out", button_margin)
+    self.logout_b : assemble_button(logout_fun)
+    self.logout_b : update_ui()
+end
+
+function Menu : resize_ui()
+    self.menu.x            = tool_box.ui.top_bar_position.x 
+    self.menu.y            = tool_box.ui.invisible_top_bar_height
+    self.menu.width        = tool_box.ui.main_menu_dimension.width
+    self.menu.height       = tool_box.ui.main_menu_dimension.height
+    self.menu.border_width = tool_box.ui.top_bar_border
+
+    image_dimension = tool_box.ui.main_menu_icon_dimension
+
+    self.awesome_shortcuts_b : resize_ui(image_dimension, image_dimension)
+    self.awesome_settings_b : resize_ui(image_dimension, image_dimension)
+    self.toggle_theme_b : resize_ui(image_dimension, image_dimension)
+    self.restart_b : resize_ui(image_dimension, image_dimension)
+    self.poweroff_b : resize_ui(image_dimension, image_dimension)
+    self.logout_b : resize_ui(image_dimension, image_dimension)
+end
+
+function Menu : toggle_theme()
+    self.menu.bg           = tool_box.theme.p_background_color
+    self.menu.border_color = tool_box.theme.t_foreground_color
+
+    self.awesome_shortcuts_b : toggle_theme(tool_box.theme.key_icon, tool_box.theme.d_key_icon)
+    self.awesome_settings_b : toggle_theme(tool_box.theme.settings_icon, tool_box.theme.d_settings_icon)
+    self.toggle_theme_b : toggle_theme(tool_box.theme.toggle_theme_icon, tool_box.theme.d_toggle_theme_icon)
+    self.restart_b : toggle_theme(tool_box.theme.restart_icon, tool_box.theme.d_restart_icon)
+    self.poweroff_b : toggle_theme(tool_box.theme.power_icon, tool_box.theme.d_power_icon)
+    self.logout_b : toggle_theme(tool_box.theme.account_icon, tool_box.theme.d_account_icon)
+end
+
+function Menu : toggle_colors()
+    self.awesome_shortcuts_b : toggle_colors(tool_box.theme.transparent_color, tool_box.theme.s_accent_color, tool_box.theme.t_foreground_color, tool_box.theme.t_foreground_accent_color)
+    self.awesome_settings_b : toggle_colors(tool_box.theme.transparent_color, tool_box.theme.s_accent_color, tool_box.theme.t_foreground_color, tool_box.theme.t_foreground_accent_color)
+    self.toggle_theme_b : toggle_colors(tool_box.theme.transparent_color, tool_box.theme.s_accent_color, tool_box.theme.t_foreground_color, tool_box.theme.t_foreground_accent_color)
+    self.restart_b : toggle_colors(tool_box.theme.transparent_color, tool_box.theme.s_accent_color, tool_box.theme.t_foreground_color, tool_box.theme.t_foreground_accent_color)
+    self.poweroff_b : toggle_colors(tool_box.theme.transparent_color, tool_box.theme.s_accent_color, tool_box.theme.t_foreground_color, tool_box.theme.t_foreground_accent_color)
+    self.logout_b : toggle_colors(tool_box.theme.transparent_color, tool_box.theme.s_accent_color, tool_box.theme.t_foreground_color, tool_box.theme.t_foreground_accent_color)
+end
+
+function Menu : update_ui()
+    self.menu : setup {
+        layout = tool_box.wibox.layout.align.vertical,
+        
+        {
+            layout = tool_box.wibox.layout.align.vertical,
+            self.awesome_shortcuts_b.button,
+            self.awesome_settings_b.button,
+            self.toggle_theme_b.button
+        },
+        
+        {
+            layout = tool_box.wibox.layout.align.vertical,
+            self.restart_b.button,
+            self.poweroff_b.button,
+            self.logout_b.button
+        },
+        nil
+    }
+
+    self.menu.screen = self.screen
+end
+
+function Menu.new()
+    local menu = setmetatable({}, Menu)    
+    return menu
+end
+
+return Menu

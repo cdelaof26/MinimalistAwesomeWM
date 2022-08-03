@@ -8,10 +8,8 @@ local awful = require("awful")
 
 local utilities = {}
 
-local whoami = ""
-
 local call = io.popen("whoami")
-whoami = string.gsub((call : read("*a")), "\n", "")
+local whoami = string.gsub((call : read("*a")), "\n", "")
 call : close()
 
 
@@ -34,10 +32,15 @@ local function poweroff()
 	)
 end
 
-utilities.whoami     = whoami
-utilities.show_rufi  = show_rufi
-utilities.restart    = restart
-utilities.poweroff   = poweroff
+local function sleep(seconds)
+	-- Linux only
+	os.execute("sleep " .. tonumber(seconds))
+end
 
+utilities.whoami    = whoami
+utilities.show_rufi = show_rufi
+utilities.restart   = restart
+utilities.poweroff  = poweroff
+utilities.sleep     = sleep
 
 return utilities

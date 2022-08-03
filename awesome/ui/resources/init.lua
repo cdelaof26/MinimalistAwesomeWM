@@ -1,4 +1,4 @@
-local icons_directory = require("awful").util.getdir("config") .. "/icons/"
+local icons_directory = require("awful").util.getdir("config") .. "ui/resources/"
 
 local icons = {
    -- Top bar

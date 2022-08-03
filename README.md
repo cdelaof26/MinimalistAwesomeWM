@@ -14,6 +14,7 @@ Terminal | Xfce4-terminal
 
 - AwesomeWM
 - rofi
+- Python 3.6 or newer
 
 
 ### Shortcuts
@@ -42,10 +43,10 @@ Combination               | Description
 
 ### Installation
 
-- Install awesomewm and rofi, you might need _root privileges_
+- Install awesomewm, rofi and python, you might need _root privileges_
 <pre>
 $ apt update
-$ apt install awesomewm rofi
+$ apt install awesomewm rofi python3
 </pre>
 
 - Clone this repo
@@ -95,9 +96,9 @@ See [theme_manager](awesome/tools/theme_manager.lua)
 Appearance
 - [X] Design desktop base
 - [X] Design main menu
-- [ ] Design top bar
+- [X] Design top bar
 - [ ] Design dock
-- [ ] Design control center
+- [X] Design control center
 - [ ] Design awesome settings _micro-app_
 - [ ] Customize rofi
 
@@ -108,8 +109,6 @@ Code
     - [X] Functional
   - [ ] Add `Awesome settings` button
     - [ ] Functional
-  - [X] Add `Toggle theme` button
-    - [X] Functional
   - [ ] Add `Restart` button
     - [X] Functional
     - [ ] Show confirmation window
@@ -119,6 +118,7 @@ Code
   - [ ] Add `Log out` button
     - [X] Functional
     - [ ] Show confirmation window
+  - [ ] Make accessible throught keyboard
 - [X] Create top bar
   - [ ] Add widgets
     - [X] Menu button
@@ -133,7 +133,12 @@ Code
     - [ ] Close client 
     - [ ] Pin applications 
 - [ ] Create control center
-  - WIP 
+  - [ ] Add volume slider
+  - [ ] Add brightness slider
+  - [ ] Add uptime label
+  - [ ] Add dark / light mode buttons
+  - [ ] Add CPU monitor
+  - [ ] Add RAM monitor
 - [ ] Create awesome settings _micro-app_
   - WIP
 - [ ] Customize rofi
@@ -143,7 +148,31 @@ Code
 
 ### Changelog
 
+### v0.2.0
+
+- Project completely reworked
+- [License](LICENSE) added
+- Now all UI elements are _managed_ as tables (objects) 
+- Toggle theme function no longer requires restart awesome
+
+**Note**: This will not work with multiple monitors
+
+
 ### v0.1
 
 - Initial project
 - Not ready to ship, but it is minimally functional :)
+
+
+### References
+
+#### Lua reference
+- [Lua manual](https://www.lua.org/manual/5.4/)
+- [Tutorials point reference](https://www.tutorialspoint.com/lua/)
+- [Lua os.execute return value](https://stackoverflow.com/questions/9676113/lua-os-execute-return-value)
+
+#### Awesome resources
+- [AwesomeWM API Documentation](https://awesomewm.org/apidoc/)
+- [Streetturtle's awesome widgets (webpage)](http://pavelmakhov.com/)
+  - [Streetturtle's awesome widgets (repo)](https://github.com/streetturtle/awesome-wm-widgets)
+- [How to get a transparent wibar?](https://www.reddit.com/r/awesomewm/comments/7561fx/how_to_get_a_transparent_wibar/)
