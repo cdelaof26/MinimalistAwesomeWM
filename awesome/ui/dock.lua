@@ -177,8 +177,8 @@ function Dock : resize_ui()
 end
 
 function Dock : toggle_theme()
-    self.dock.border_color = tool_box.theme.p_background_color
-    self.dock.bg           = tool_box.theme.p_background_color
+    self.dock.border_color = tool_box.theme.s_background_color
+    self.dock.bg           = tool_box.theme.s_background_color
 end
 
 function Dock : update_ui()

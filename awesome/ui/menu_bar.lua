@@ -7,14 +7,15 @@ local tool_box = nil
 local Bar = {
     screen          = nil,
     -- Widgets
-    bar             = nil,
-    taglist         = nil,
-    invisible_bar   = nil,
-    launcher_button = nil,
-    search_button   = nil,
-    taglist_buttons = nil,
-    current_user    = nil,
-    current_time    = nil
+    bar                  = nil,
+    taglist              = nil,
+    invisible_bar        = nil,
+    launcher_button      = nil,
+    search_button        = nil,
+    taglist_buttons      = nil,
+    control_panel_button = nil,
+    current_user         = nil,
+    current_time         = nil
 }
 Bar.__index = Bar
 
@@ -22,29 +23,7 @@ function Bar : set_tool_box(tb)
     tool_box = tb
 end
 
-function Bar : init_left_widgets()
-    self.current_user = tool_box.wibox.widget {
-        {
-            {
-                widget = tool_box.wibox.widget.textbox,
-                text   = tool_box.utilities.whoami
-            },   
-            id = "second",
-            layout = tool_box.wibox.container.margin(self.current_user, tool_box.ui.right_bar_widgets_margin, tool_box.ui.right_bar_widgets_margin, 0, 0)
-        },
-        id = "first",
-        widget = tool_box.wibox.container.background
-    }
-
-    self.current_time = tool_box.wibox.widget {
-        layout = tool_box.wibox.container.margin(self.current_time, tool_box.ui.right_bar_widgets_margin, tool_box.ui.right_bar_widgets_margin, 0, 0),
-        {
-            widget = tool_box.wibox.widget.textclock,
-        }
-    }
-end
-
-function Bar : init_ui(screen, ColorButton, menu)
+function Bar : init_ui(screen, ColorButton, menu, control_panel)
     self.screen = screen
 
     self.invisible_bar = tool_box.awful.wibar(
@@ -61,27 +40,19 @@ function Bar : init_ui(screen, ColorButton, menu)
         visible      = true
     }
 
-    self.launcher_button = tool_box.wibox.widget {
-        widget = tool_box.wibox.widget.imagebox,
-        resize = true
-    }
 
-    self.launcher_button : buttons(
-        tool_box.gears.table.join(
-            self.launcher_button : buttons(),
-            tool_box.awful.button(
-                {}, 
-                1, 
-                function()
-                    menu : toggle_menu()
-                end
-            )
-        )
-    )
+    local show_menu = function()
+        menu : toggle_visibility()
+    end
+
+    self.launcher_button = ColorButton.new()
+    self.launcher_button : init_ui(true, nil, 0)
+    self.launcher_button : assemble_button(show_menu)
+    self.launcher_button : update_ui()
+
 
     self.search_button = ColorButton.new()
     self.search_button : init_ui(true, nil, tool_box.ui.search_icon_margin)
-    
     self.search_button : assemble_button(tool_box.utilities.show_rufi)
     self.search_button : update_ui()
 
@@ -159,18 +130,43 @@ function Bar : init_ui(screen, ColorButton, menu)
         buttons = self.taglist_buttons
     }
 
-    self : init_left_widgets()
+
+    local show_control_panel = function()
+        control_panel : toggle_visibility()
+    end
+
+    self.control_panel_button = ColorButton.new()
+    self.control_panel_button : init_ui(true, nil, 8)
+    self.control_panel_button : assemble_button(show_control_panel)
+    self.control_panel_button : update_ui()
+
+    self.current_user = tool_box.wibox.widget {
+        {
+            {
+                widget = tool_box.wibox.widget.textbox,
+                text   = tool_box.utilities.whoami
+            },
+            layout = tool_box.wibox.container.margin(self.current_user, tool_box.ui.right_bar_widgets_margin, tool_box.ui.right_bar_widgets_margin, 0, 0)
+        },
+        widget = tool_box.wibox.container.background
+    }
+
+    self.current_time = tool_box.wibox.widget {
+        {
+            {
+                widget = tool_box.wibox.widget.textclock,
+                format = "%A %b %d   %H:%M"
+            },
+            layout = tool_box.wibox.container.margin(self.current_time, tool_box.ui.right_bar_widgets_margin, tool_box.ui.right_bar_widgets_margin, 0, 0)
+        },
+        widget = tool_box.wibox.container.background
+    }
 end
 
 function Bar : resize_ui()
-    self.launcher_button.forced_width = tool_box.ui.top_bar_height
-    self.launcher_button.forced_height = tool_box.ui.top_bar_height
-    
+    self.launcher_button : resize_ui(tool_box.ui.top_bar_height, tool_box.ui.top_bar_height)
     self.search_button : resize_ui(tool_box.ui.search_icon_dimension, tool_box.ui.search_icon_dimension)
-
-    -- Since I couldn't find how to change the margin without re-initializating those widgets
-    -- Initialization is done as many times as needed here
-    self : init_left_widgets()
+    self.control_panel_button : resize_ui(25, 25)
 
     self.invisible_bar.height = tool_box.ui.invisible_top_bar_height
 
@@ -181,11 +177,13 @@ function Bar : resize_ui()
 end
 
 function Bar : toggle_theme()
-    self.launcher_button.image = tool_box.theme.main_icon
+    self.launcher_button : toggle_theme(tool_box.theme.main_icon, tool_box.theme.main_icon)
 
     self.search_button : toggle_theme(tool_box.theme.search_icon, tool_box.theme.d_search_icon)
 
-    self.bar.bg = tool_box.theme.p_background_color
+    self.bar.bg = tool_box.theme.s_background_color
+
+    self.control_panel_button : toggle_theme(tool_box.theme.control_panel_icon, tool_box.theme.control_panel_icon)
 end
 
 function Bar : toggle_colors()
@@ -193,7 +191,7 @@ function Bar : toggle_colors()
 
     self.current_user.bg = tool_box.theme.p_accent_color
     self.current_user.fg = tool_box.theme.t_foreground_accent_color
-    self.current_time.widget.format = "<span foreground='" .. tool_box.theme.t_foreground_color .. "' weight='normal'> %A %b %d   %H:%M</span>"
+    self.current_time.fg = tool_box.theme.t_foreground_color
 end
 
 function Bar : update_ui()
@@ -202,7 +200,7 @@ function Bar : update_ui()
         
         {
             layout = tool_box.wibox.layout.fixed.horizontal,
-            self.launcher_button,
+            self.launcher_button.button,
             self.search_button.button,
             self.taglist
         },
@@ -211,6 +209,7 @@ function Bar : update_ui()
         
         {
             layout = tool_box.wibox.layout.fixed.horizontal,
+            self.control_panel_button.button,
             self.current_user,
             self.current_time
         }

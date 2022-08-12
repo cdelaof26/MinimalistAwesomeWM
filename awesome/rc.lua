@@ -38,18 +38,22 @@ local tool_box = {
 
 require("tools.key_manager")
 
-
 local testing_screen = awful.screen.focused()
 
 local ColorButton = require("ui.modular.color_button")
 local Bar = require("ui.menu_bar")
 local Menu = require("ui.menu")
 local Dock = require("ui.dock")
+local ControlPanel = require("ui.control_panel")
+
+
+utilities.delete_stop_flag()
 
 
 local b1 = Bar.new()
 local m1 = Menu.new()
 local d1 = Dock.new()
+local cp1 = ControlPanel.new()
 
 
 local function update_theme()
@@ -65,6 +69,7 @@ local function update_theme()
     b1 : set_tool_box(tool_box)
     m1 : set_tool_box(tool_box)
     d1 : set_tool_box(tool_box)
+    cp1 : set_tool_box(tool_box)
     ui.set_wallpaper(testing_screen)
 
 
@@ -77,7 +82,11 @@ local function update_theme()
     m1 : update_ui()
 
     d1 : toggle_theme()
-    d1: update_ui()
+    d1 : update_ui()
+
+    cp1 : toggle_theme()
+    cp1 : toggle_colors()
+    cp1 : update_ui()
 
     -- For some reason, tags do not update their colors
     -- In order to update them, a little move is performed as workaround for now
@@ -91,7 +100,7 @@ ColorButton : set_tool_box(tool_box)
 
 
 m1 : set_tool_box(tool_box)
-m1 : init_ui(testing_screen, ColorButton, update_theme)
+m1 : init_ui(testing_screen, ColorButton)
 m1 : resize_ui()
 m1 : toggle_theme()
 m1 : toggle_colors()
@@ -99,7 +108,7 @@ m1 : update_ui()
 
 
 b1 : set_tool_box(tool_box)
-b1 : init_ui(testing_screen, ColorButton, m1)
+b1 : init_ui(testing_screen, ColorButton, m1, cp1)
 b1 : resize_ui()
 b1 : toggle_theme()
 b1 : toggle_colors()
@@ -113,12 +122,24 @@ d1 : toggle_theme()
 d1 : update_ui()
 
 
+cp1 : set_tool_box(tool_box)
+cp1 : init_ui(testing_screen, ColorButton, update_theme)
+cp1 : resize_ui()
+cp1 : toggle_theme()
+cp1 : toggle_colors()
+cp1 : update_ui()
+
+
 ui.set_wallpaper(testing_screen)
 
 
 
 -- Restart awesome if display resolution is changed
-screen.connect_signal("property::geometry", awesome.restart)
+function restart_wm()
+    utilities.create_stop_flag()
+    awesome.restart()
+end
+screen.connect_signal("property::geometry", restart_wm)
 
 -- Add close, minimize and maximize buttons to each client
 client.connect_signal(
@@ -179,11 +200,6 @@ client.connect_signal(
         client.shape = ui.ROUNDED_RECT
     end
 )
-
-
-
-
-
 
 
 -- {{{ Rules

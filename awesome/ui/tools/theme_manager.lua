@@ -30,8 +30,6 @@ theme.toggle_theme = function()
     end
     
     call : close()
-
-    --awesome.restart()
 end
 
 
@@ -40,13 +38,23 @@ theme.RED   = "#FF0000"
 theme.WHITE = "#FFFFFF"
 
 
+-- Other
+
+-- Please use 24hr format otherwise it won't work as expected
+theme.change_to_dark_at  = "19:00"
+theme.change_to_light_at = "09:00"
+
+
 theme.update = function()
     local file = io.open(config_dir .. "/use_dark", "r")
     if file ~= nil then
         io.close(file)
         -- If exists use dark palette
-        theme.main_icon   = icons.d_logo
-        theme.search_icon = icons.d_search
+        theme.dark_mode_active = true
+
+        theme.main_icon          = icons.d_logo
+        theme.search_icon        = icons.d_search
+        theme.control_panel_icon = icons.d_toggle
 
         theme.key_icon          = icons.d_key
         theme.settings_icon     = icons.d_settings
@@ -54,6 +62,10 @@ theme.update = function()
         theme.restart_icon      = icons.d_restart
         theme.power_icon        = icons.d_power
         theme.account_icon      = icons.d_account
+
+        theme.day_icon   = icons.d_day
+        theme.night_icon = icons.d_night
+
 
         theme.p_background_color = "#000000"
         theme.s_background_color = "#1E1E1E"
@@ -68,8 +80,11 @@ theme.update = function()
         -- call : close()
     else
         -- If doesn't exists use light palette
-        theme.main_icon   = icons.l_logo
-        theme.search_icon = icons.l_search
+        theme.dark_mode_active = false
+
+        theme.main_icon          = icons.l_logo
+        theme.search_icon        = icons.l_search
+        theme.control_panel_icon = icons.l_toggle
 
         theme.key_icon          = icons.l_key
         theme.settings_icon     = icons.l_settings
@@ -77,6 +92,10 @@ theme.update = function()
         theme.restart_icon      = icons.l_restart
         theme.power_icon        = icons.l_power
         theme.account_icon      = icons.l_account
+
+        theme.day_icon   = icons.l_day
+        theme.night_icon = icons.l_night
+
 
         theme.p_background_color = "#FFFFFF"
         theme.s_background_color = "#F5F5F5"
@@ -93,7 +112,8 @@ theme.update = function()
     end
 
 
-    theme.d_search_icon = icons.d_search
+    theme.d_search_icon        = icons.d_search
+    theme.d_control_panel_icon = icons.d_toggle
 
     theme.d_key_icon          = icons.d_key
     theme.d_settings_icon     = icons.d_settings
@@ -102,6 +122,10 @@ theme.update = function()
     theme.d_power_icon        = icons.d_power
     theme.d_account_icon      = icons.d_account
 
+    theme.d_day_icon   = icons.d_day
+    theme.d_night_icon = icons.d_night
+    theme.d_cpu        = icons.d_cpu
+    theme.d_mem        = icons.d_mem
 
 
     theme.t_foreground_accent_color = "#FFFFFF"

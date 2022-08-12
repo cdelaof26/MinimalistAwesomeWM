@@ -8,6 +8,9 @@ local icons = {
    d_search = icons_directory .. "d_search.png",
    l_search = icons_directory .. "l_search.png",
 
+   d_toggle = icons_directory .. "d_toggle.png",
+   l_toggle = icons_directory .. "l_toggle.png",
+
 
    -- Main menu
    d_key = icons_directory .. "d_key.png",
@@ -29,8 +32,22 @@ local icons = {
    l_account = icons_directory .. "l_account.png",
 
 
-   d_     = icons_directory .. "d_.png",
-   l_     = icons_directory .. "l_.png",
+   -- Control panel
+   d_day = icons_directory .. "d_day.png",
+   l_day = icons_directory .. "l_day.png",
+
+   d_night = icons_directory .. "d_night.png",
+   l_night = icons_directory .. "l_night.png",
+
+   d_cpu = icons_directory .. "d_processor.png",
+   -- l_cpu = icons_directory .. "l_processor.png",
+
+   d_mem = icons_directory .. "d_memory.png",
+   -- l_mem = icons_directory .. "l_.png",
+
+
+   d_ = icons_directory .. "d_.png",
+   l_ = icons_directory .. "l_.png",
 
 
    -- Client icons

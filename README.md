@@ -1,4 +1,4 @@
-# Minimalist AwesomeWM
+# MinimalistAwesomeWM
 
 ![Concept image](https://github.com/cdelaof26/MinimalistAwesomeWM/blob/main/images/Concept.jpeg?raw=true)
 
@@ -73,7 +73,7 @@ $ cp -r awesome ~/.config/
 
 ### No wallpaper?
 
-Create `wallpaper` folder in awesome config directory
+Create `wallpaper` folder inside awesome config directory
 <pre>
 $ mkdir ~/.config/awesome/wallpaper
 </pre>
@@ -85,10 +85,45 @@ $ cp Dark.jpg ~/.config/awesome/wallpaper
 </pre>
 
 **Note**: Your wallpapers should be named as `Light.jpg` and `Dark.jpg`
-(case sensitive), at the moment this is not customizable unless you change 
+(case-sensitive), at the moment this is not customizable unless you change 
 the code
 
-See [theme_manager](awesome/tools/theme_manager.lua)
+See [theme_manager](awesome/ui/tools/theme_manager.lua)
+
+
+### Mini library
+
+Feel free to use [color_button](awesome/ui/modular/color_button.lua) and
+[message_pane](awesome/ui/modular/message_pane.lua) in your projects!
+
+**Disclaimer**: Those might be a _hot mess_, use at your own discretion
+
+
+### License
+
+<pre>
+MIT License
+
+Copyright (c) 2022 cdelaof26
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+</pre>
 
 
 ### TODO
@@ -109,22 +144,22 @@ Code
     - [X] Functional
   - [ ] Add `Awesome settings` button
     - [ ] Functional
-  - [ ] Add `Restart` button
+  - [X] Add `Restart` button
     - [X] Functional
-    - [ ] Show confirmation window
-  - [ ] Add `Power off` button
+    - [X] Show confirmation window
+  - [X] Add `Power off` button
     - [X] Functional
-    - [ ] Show confirmation window
-  - [ ] Add `Log out` button
+    - [X] Show confirmation window
+  - [X] Add `Log out` button
     - [X] Functional
-    - [ ] Show confirmation window
+    - [X] Show confirmation window
   - [ ] Make accessible throught keyboard
 - [X] Create top bar
-  - [ ] Add widgets
+  - [X] Add widgets
     - [X] Menu button
     - [X] Search button
     - [X] Tag-lists
-    - [ ] Control center
+    - [X] Control center
     - [X] Username label
     - [X] Clock
 - [X] Create dock
@@ -132,13 +167,12 @@ Code
     - [X] Show clients
     - [ ] Close client 
     - [ ] Pin applications 
-- [ ] Create control center
-  - [ ] Add volume slider
-  - [ ] Add brightness slider
-  - [ ] Add uptime label
-  - [ ] Add dark / light mode buttons
-  - [ ] Add CPU monitor
-  - [ ] Add RAM monitor
+- [X] Create control _panel_
+  - [X] Add uptime label
+  - [X] Add dark / light mode buttons
+    - [X] Create scheduled for changing themes
+  - [X] Add CPU monitor
+  - [X] Add RAM monitor
 - [ ] Create awesome settings _micro-app_
   - WIP
 - [ ] Customize rofi
@@ -147,6 +181,15 @@ Code
 - [ ] Clean up
 
 ### Changelog
+
+### v0.2.5
+- Added control panel
+- Added scheduled theme function
+- Removed toggle theme from the main menu
+- Created `message_pane` utility 
+  - **This utility requires of Python 3.6 or newer**
+
+**Note**: This will not work with multiple monitors
 
 ### v0.2.0
 
@@ -176,3 +219,11 @@ Code
 - [Streetturtle's awesome widgets (webpage)](http://pavelmakhov.com/)
   - [Streetturtle's awesome widgets (repo)](https://github.com/streetturtle/awesome-wm-widgets)
 - [How to get a transparent wibar?](https://www.reddit.com/r/awesomewm/comments/7561fx/how_to_get_a_transparent_wibar/)
+- [How can I position an awful.popup relative to a widget in another wibox?](https://www.reddit.com/r/awesomewm/comments/bhuldr/how_can_i_position_an_awfulpopup_relative_to_a/)
+- [Smaller title bar?](https://www.reddit.com/r/awesomewm/comments/jyew3n/smaller_title_bar/) (How to change client title bar size)
+
+#### Others
+
+- [Script to get CPU usage](https://github.com/pcolby/scripts/blob/master/cpu.sh)
+  - [How to read the Linux /proc/stat file](https://supportcenter.checkpoint.com/supportcenter/portal?eventSubmit_doGoviewsolutiondetails=&solutionid=sk65143)
+- [How to Find the Physical Memory Available on a System Through the Command Line](https://qualitestgroup.com/insights/technical-hub/how-to-find-the-physical-memory-available-on-a-system-through-the-command-line/)

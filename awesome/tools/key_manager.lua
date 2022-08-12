@@ -7,6 +7,7 @@ local gears = require("gears")
 local beautiful = require("beautiful")
 local hotkeys_popup = require("awful.hotkeys_popup")
 
+local utilities = require("tools.utils")
 
 ---------------------
 -- Terminal_modkey --
@@ -29,8 +30,11 @@ globalkeys = gears.table.join(
     ),
     
     awful.key(
-        { modkey, "Control" }, "r", 
-        awesome.restart,
+        { modkey, "Control" }, "r",
+        function()
+            utilities.create_stop_flag()
+            awesome.restart()
+         end,
         { description = "Reload awesome", group = "awesome" }
     ),
     

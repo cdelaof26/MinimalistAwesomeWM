@@ -56,7 +56,7 @@ local right_bar_widgets_margin = 15
 
 local main_menu_dimension = {
 	width  = 200,
-    height = 240
+    height = 200
 }
 
 local main_menu_icon_dimension = 20
