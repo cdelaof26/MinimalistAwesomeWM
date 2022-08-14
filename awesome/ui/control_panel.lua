@@ -69,9 +69,9 @@ function ControlPanel : init_ui(screen, ColorButton, update_theme)
 
 
 	local use_light_mode = function()
-		--if tool_box.theme.dark_mode_active then
+		if tool_box.theme.dark_mode_active then
 			update_theme()
-		--end
+		end
 	end
 
 	local use_dark_mode = function()
