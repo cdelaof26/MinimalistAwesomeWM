@@ -182,6 +182,9 @@ Code
 
 ### Changelog
 
+### v0.2.5_1
+- Fixed memory leak when theme was toggled 
+
 ### v0.2.5
 - Added control panel
 - Added scheduled theme function
@@ -227,3 +230,4 @@ Code
 - [Script to get CPU usage](https://github.com/pcolby/scripts/blob/master/cpu.sh)
   - [How to read the Linux /proc/stat file](https://supportcenter.checkpoint.com/supportcenter/portal?eventSubmit_doGoviewsolutiondetails=&solutionid=sk65143)
 - [How to Find the Physical Memory Available on a System Through the Command Line](https://qualitestgroup.com/insights/technical-hub/how-to-find-the-physical-memory-available-on-a-system-through-the-command-line/)
+- [Memory leak with gears.wallpaper](https://github.com/awesomeWM/awesome/issues/368)

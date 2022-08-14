@@ -77,15 +77,6 @@ local function show_notification(title, msg)
 	)
 end
 
-local function set_wallpaper(screen)
-    local wallpaper = require("beautiful").wallpaper
-    if type(wallpaper) == "function" then
-        wallpaper = wallpaper(screen)
-    end
-
-    gears.wallpaper.maximized(wallpaper, screen, true)
-end
-
 local function calculate_client_button_margin(screen_width, screen_height)
 	local margins = { }
 

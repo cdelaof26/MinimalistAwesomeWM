@@ -71,7 +71,7 @@ theme.update = function()
         theme.s_background_color = "#1E1E1E"
         theme.t_foreground_color = "#FFFFFF"
 
-        theme.wallpaper   = config_dir .. "/wallpaper/Dark.jpg"
+        theme.wallpaper = config_dir .. "/wallpaper/Dark.jpg"
 
         theme.p_accent_color = "#513DC0"
         theme.s_accent_color = "#6F5BDF"
@@ -101,7 +101,7 @@ theme.update = function()
         theme.s_background_color = "#F5F5F5"
         theme.t_foreground_color = "#000000"
 
-        theme.wallpaper   = config_dir .. "/wallpaper/Light.jpg"
+        theme.wallpaper = config_dir .. "/wallpaper/Light.jpg"
 
         theme.p_accent_color = "#DE1B58"
         theme.s_accent_color = "#F22F6C"

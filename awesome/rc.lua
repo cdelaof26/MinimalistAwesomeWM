@@ -21,6 +21,11 @@ local hotkeys_popup = require("awful.hotkeys_popup")
 
 local theme = require("ui.tools.theme_manager")
 
+function set_wallpaper()
+    gears.wallpaper.maximized(theme.wallpaper)
+    collectgarbage("collect")
+end
+
 
 beautiful.init(theme)
 
@@ -47,6 +52,13 @@ local Dock = require("ui.dock")
 local ControlPanel = require("ui.control_panel")
 
 
+ColorButton : set_tool_box(tool_box)
+Bar : set_tool_box(tool_box)
+Menu : set_tool_box(tool_box)
+Dock : set_tool_box(tool_box)
+ControlPanel : set_tool_box(tool_box)
+
+
 utilities.delete_stop_flag()
 
 
@@ -56,37 +68,24 @@ local d1 = Dock.new()
 local cp1 = ControlPanel.new()
 
 
+
 local function update_theme()
     theme : toggle_theme()
     theme : update()
     beautiful.init(theme)
-
-    tool_box.theme = theme
     
-     
-    ColorButton : set_tool_box(tool_box)
-    
-    b1 : set_tool_box(tool_box)
-    m1 : set_tool_box(tool_box)
-    d1 : set_tool_box(tool_box)
-    cp1 : set_tool_box(tool_box)
-    ui.set_wallpaper(testing_screen)
-
+    set_wallpaper()
 
     b1 : toggle_theme()
     b1 : toggle_colors()
-    b1 : update_ui()
 
     m1 : toggle_theme()
     m1 : toggle_colors()
-    m1 : update_ui()
 
     d1 : toggle_theme()
-    d1 : update_ui()
 
     cp1 : toggle_theme()
     cp1 : toggle_colors()
-    cp1 : update_ui()
 
     -- For some reason, tags do not update their colors
     -- In order to update them, a little move is performed as workaround for now
@@ -96,10 +95,8 @@ local function update_theme()
     awful.tag.viewnext()
 end
 
-ColorButton : set_tool_box(tool_box)
 
 
-m1 : set_tool_box(tool_box)
 m1 : init_ui(testing_screen, ColorButton)
 m1 : resize_ui()
 m1 : toggle_theme()
@@ -107,7 +104,6 @@ m1 : toggle_colors()
 m1 : update_ui()
 
 
-b1 : set_tool_box(tool_box)
 b1 : init_ui(testing_screen, ColorButton, m1, cp1)
 b1 : resize_ui()
 b1 : toggle_theme()
@@ -115,14 +111,12 @@ b1 : toggle_colors()
 b1 : update_ui()
 
 
-d1 : set_tool_box(tool_box)
 d1 : init_ui(testing_screen)
 d1 : resize_ui()
 d1 : toggle_theme()
 d1 : update_ui()
 
 
-cp1 : set_tool_box(tool_box)
 cp1 : init_ui(testing_screen, ColorButton, update_theme)
 cp1 : resize_ui()
 cp1 : toggle_theme()
@@ -130,7 +124,7 @@ cp1 : toggle_colors()
 cp1 : update_ui()
 
 
-ui.set_wallpaper(testing_screen)
+set_wallpaper()
 
 
 
